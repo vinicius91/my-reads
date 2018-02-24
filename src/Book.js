@@ -3,11 +3,6 @@ import PropTypes from "prop-types";
 import BookShelfChanger from "./BookShelfChanger";
 
 class Book extends Component {
-  static propTypes = {
-    backgroundImage: PropTypes.string.isRequired,
-    title: PropTypes.string.isRequired,
-    authors: PropTypes.array.isRequired
-  };
 
   render() {
     const { backgroundImage, title, authors } = this.props;
@@ -26,10 +21,16 @@ class Book extends Component {
           <BookShelfChanger />
         </div>
         <div className="book-title">{title}</div>
-        {authors.map(author => <div className="book-authors">{author}</div>)}
+        {authors.map(author => <div key={author}className="book-authors">{author}</div>)}
       </div>
     );
   }
 }
+
+Book.propTypes = {
+  backgroundImage: PropTypes.string.isRequired,
+  title: PropTypes.string.isRequired,
+  authors: PropTypes.array.isRequired
+};
 
 export default Book;

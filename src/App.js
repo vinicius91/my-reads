@@ -1,10 +1,33 @@
 import React, { Component } from "react";
+import PropTypes from 'prop-types';
+import { withStyles } from 'material-ui/styles';
 import * as BooksAPI from "./BooksAPI";
 import SearchBooks from "./SearchBooks";
 import BookShelf from "./BookShelf";
 import "./App.css";
+import AppBar from 'material-ui/AppBar';
+import Toolbar from 'material-ui/Toolbar';
+import Typography from 'material-ui/Typography';
+import Button from 'material-ui/Button';
+import IconButton from 'material-ui/IconButton';
+import MenuIcon from 'material-ui-icons/Menu';
+
+const styles = {
+  root: {
+    flexGrow: 1,
+  },
+  flex: {
+    flex: 1,
+  },
+  menuButton: {
+    marginLeft: -12,
+    marginRight: 20,
+  },
+};
+
 
 class BooksApp extends Component {
+  
   state = {
     /**
      * TODO: Instead of using this state variable to keep track of which page
@@ -20,8 +43,6 @@ class BooksApp extends Component {
   };
 
   componentDidMount() {
-    const BooksShelf = this.state.shelf;
-
     BooksAPI.getAll().then(books => {
       this.setState({
         bookWant: books.filter(book => book.shelf === "wantToRead"),
@@ -36,17 +57,26 @@ class BooksApp extends Component {
   }
 
   render() {
+    const { classes } = this.props;
     return (
       <div className="app">
+        <AppBar position="static">
+        <Toolbar>
+          <IconButton className={classes.menuButton} color="inherit" aria-label="Menu">
+            <MenuIcon />
+          </IconButton>
+          <Typography variant="title" color="inherit" className={classes.flex}>
+            MyReads
+          </Typography>
+          <Button color="inherit">Login</Button>
+        </Toolbar>
+      </AppBar>
         {this.state.showSearchPage ? (
           <SearchBooks />
         ) : (
           <div className="list-books">
-            <div className="list-books-title">
-              <h1>MyReads</h1>
-            </div>
             <div className="list-books-content">
-              <div>
+              <div className="row">
                 {this.state.shelf.map(shelf => {
                   var books;
                   if (shelf === "Currently Reading") {
@@ -58,7 +88,7 @@ class BooksApp extends Component {
                   if (shelf === "Read") {
                     books = this.state.bookRead;
                   }
-                  return <BookShelf title={shelf} books={books} />;
+                  return <BookShelf key={shelf} title={shelf} books={books} />;
                 })}
               </div>
             </div>
@@ -74,4 +104,8 @@ class BooksApp extends Component {
   }
 }
 
-export default BooksApp;
+BooksApp.propTypes = {
+  classes: PropTypes.object.isRequired,
+};
+
+export default withStyles(styles)(BooksApp);
