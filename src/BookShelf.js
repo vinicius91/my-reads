@@ -21,12 +21,21 @@ const styles = theme => ({
 
 class BookShelf extends Component {
   state = {
-    books: null,
+    books: [],
   };
 
-  render() {
-    const { title, books, classes } = this.props;
+  // componentDidMount() {
+  //   this.setState.books = this.props.books;
+  //   console.log(this.props.books);
+  // }
 
+  componentDidMount(){
+    this.setState({books: this.props.books})
+  }
+
+  
+  render() {
+    const { title, classes, books, updateBook } = this.props;
     return (
       <div className="bookshelf">
         <ExpansionPanel>
@@ -36,11 +45,10 @@ class BookShelf extends Component {
           <ExpansionPanelDetails>
               <ol className="books-grid">
                 {books.map(book => (
-                  <li key={book.title}>
+                  <li key={book.id}>
                     <Book
-                      backgroundImage={book.imageLinks.thumbnail}
-                      title={book.title}
-                      authors={book.authors}
+                      book={book}
+                      updateBook={updateBook}
                     />
                   </li>
                 ))}
@@ -55,7 +63,8 @@ class BookShelf extends Component {
 BookShelf.propTypes = {
   classes: PropTypes.object.isRequired,
   title: PropTypes.string.isRequired,
-  books: PropTypes.array.isRequired
+  books: PropTypes.array.isRequired,
+  updateBook: PropTypes.func.isRequired
 };
 
 export default withStyles(styles)(BookShelf);

@@ -4,9 +4,18 @@ import BookShelfChanger from "./BookShelfChanger";
 
 class Book extends Component {
 
-  render() {
-    const { backgroundImage, title, authors } = this.props;
+  constructor(props) {
+    super(props);
+    this.getShelfForUpdate = this.getShelfForUpdate.bind(this);
+  }
 
+  getShelfForUpdate(shelf) {
+    this.props.updateBook(this.props.book, shelf);
+  }
+
+
+  render() {
+    const { imageLinks, title, authors, shelf } = this.props.book;
     return (
       <div className="book">
         <div className="book-top">
@@ -15,10 +24,10 @@ class Book extends Component {
             style={{
               width: 128,
               height: 193,
-              backgroundImage: `url("${backgroundImage}")`
+              backgroundImage: `url("${imageLinks.thumbnail}")`
             }}
           />
-          <BookShelfChanger />
+          <BookShelfChanger shelf={shelf} getShelfForUpdate={this.getShelfForUpdate} />
         </div>
         <div className="book-title">{title}</div>
         {authors.map(author => <div key={author}className="book-authors">{author}</div>)}
@@ -28,9 +37,8 @@ class Book extends Component {
 }
 
 Book.propTypes = {
-  backgroundImage: PropTypes.string.isRequired,
-  title: PropTypes.string.isRequired,
-  authors: PropTypes.array.isRequired
+  book: PropTypes.object.isRequired,
+  updateBook: PropTypes.func.isRequired
 };
 
 export default Book;
