@@ -6,16 +6,41 @@ class Book extends Component {
 
   constructor(props) {
     super(props);
+    this.state = {
+      book: {
+        imageLinks: { thumbnail: '' },
+        authors: [''],
+        title: '',
+        shelf: 'none'
+      }
+    };
     this.getShelfForUpdate = this.getShelfForUpdate.bind(this);
+    if (this.props.book.shelf === undefined) {
+      this.props.book.shelf = "none";
+    }
+    if (this.props.book.authors === undefined) {
+      this.props.book.authors = [];
+    }
+
+    if (this.props.book.imageLinks === undefined) {
+      this.props.book.imageLinks = { thumbnail: '' };
+    }
   }
+
+  componentWillMount() {
+    this.setState({book: this.props.book });
+  }
+
+  // componentWillUpdate() {
+  //   this.setState({book: this.props.book})
+  // }
 
   getShelfForUpdate(shelf) {
     this.props.updateBook(this.props.book, shelf);
   }
 
-
   render() {
-    const { imageLinks, title, authors, shelf } = this.props.book;
+    const { imageLinks, title, authors, shelf } = this.state.book;
     return (
       <div className="book">
         <div className="book-top">

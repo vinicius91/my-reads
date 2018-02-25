@@ -1,6 +1,5 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
-import Book from "./Book";
 import { withStyles } from 'material-ui/styles';
 import ExpansionPanel, {
   ExpansionPanelSummary,
@@ -8,6 +7,8 @@ import ExpansionPanel, {
 } from 'material-ui/ExpansionPanel';
 import Typography from 'material-ui/Typography';
 import ExpandMoreIcon from 'material-ui-icons/ExpandMore';
+import Book from "./Book";
+
 
 const styles = theme => ({
   root: {
@@ -20,22 +21,14 @@ const styles = theme => ({
 });
 
 class BookShelf extends Component {
-  state = {
-    books: [],
-  };
 
-  // componentDidMount() {
-  //   this.setState.books = this.props.books;
-  //   console.log(this.props.books);
-  // }
-
-  componentDidMount(){
-    this.setState({books: this.props.books})
-  }
-
-  
   render() {
-    const { title, classes, books, updateBook } = this.props;
+    const {
+      title,
+      classes,
+      books,
+      updateBook
+    } = this.props;
     return (
       <div className="bookshelf">
         <ExpansionPanel>
@@ -43,16 +36,16 @@ class BookShelf extends Component {
             <Typography className={classes.heading}>{title}</Typography>
           </ExpansionPanelSummary>
           <ExpansionPanelDetails>
-              <ol className="books-grid">
-                {books.map(book => (
-                  <li key={book.id}>
-                    <Book
-                      book={book}
-                      updateBook={updateBook}
-                    />
-                  </li>
-                ))}
-              </ol>
+            <ol className="books-grid">
+              {books.map(book => (
+                <li key={book.id}>
+                  <Book
+                    book={book}
+                    updateBook={updateBook}
+                  />
+                </li>
+              ))}
+            </ol>
           </ExpansionPanelDetails>
         </ExpansionPanel>
       </div>
