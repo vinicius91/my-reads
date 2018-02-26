@@ -6,25 +6,26 @@ class BookShelfChanger extends Component {
   constructor(props) {
     super(props);
     this.state = { shelf: '' };
+    this.updateShelf = this.updateShelf.bind(this);
+    this.getShelfForUpdate = this.props.getShelfForUpdate.bind(this);
   }
 
   componentWillMount() {
     this.setState({ 
       shelf: this.props.shelf,
-      getShelfForUpdate: this.props.getShelfForUpdate
     });
   }
 
   updateShelf(event) {
-    console.log(event.target.value);
-    this.setState({shelf: event.target.value});
-    this.props.getShelfForUpdate(event.target.value);
+    const shelf = event.target.value;
+    this.getShelfForUpdate(shelf);
+    this.setState({ shelf });
   }
 
   render() {
     return (
       <div className="book-shelf-changer">
-        <select value={this.state.shelf} onChange={this.updateShelf.bind(this)}>
+        <select value={this.state.shelf} onChange={this.updateShelf}>
           <option value="none" disabled>
             Move to...
           </option>

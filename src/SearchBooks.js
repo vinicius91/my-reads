@@ -16,6 +16,11 @@ class SearchBooks extends Component {
   }
 
   updateBooks(event) {
+    if (event.target.value === '') {
+      this.setState({searchTerm: event.target.value });
+      this.setState({ books: [] });
+      return;
+    }
     this.setState({searchTerm: event.target.value });
     BooksAPI.search(event.target.value).then((books) => {
       if (books !== undefined) {

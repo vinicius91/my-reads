@@ -28,7 +28,7 @@ class Book extends Component {
   }
 
   componentWillMount() {
-    this.setState({book: this.props.book });
+    this.setState({ book: this.props.book });
   }
 
   // componentWillUpdate() {
@@ -36,7 +36,9 @@ class Book extends Component {
   // }
 
   getShelfForUpdate(shelf) {
-    this.props.updateBook(this.props.book, shelf);
+    const { book } = this.props;
+    book.shelf = shelf;
+    this.props.updateBook(book, shelf);
   }
 
   render() {
