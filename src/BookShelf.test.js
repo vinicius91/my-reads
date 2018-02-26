@@ -1,26 +1,35 @@
 import React from "react";
-import { shallow } from "enzyme";
+import { shallow, mount } from "enzyme";
 import BookShelf from "./BookShelf";
 
 describe("<BookShelf />", () => {
   const booksArray = [
     {
+      id: "bookOne",
       title: "string",
       backgroundImage: "string",
-      authors: { 0: "AuthorOne", 1: "AuthorTwo" },
+      authors: ["AuthorOne", "AuthorTwo"],
       imageLinks: { thumbnail: "string" }
     },
     {
+      id: "bookTwo",
       title: "string",
       backgroundImage: "string",
-      authors: { 0: "AuthorOne", 1: "AuthorTwo" },
+      authors: ["AuthorOne", "AuthorTwo"],
       imageLinks: { thumbnail: "string" }
     }
   ];
 
-  global.localStorage = { getItem: jest.fn(), setItem: jest.fn() };
+  it("shallow renders correctly", () => {
+    expect(shallow(<BookShelf title="string" books={booksArray} updateBook={jest.fn()} />));
+  });
 
-  const books = it("shallow renders correctly", () => {
-    expect(shallow(<BookShelf title="string" books={booksArray} />));
+  it("mount renders correctly", () => {
+    expect(mount(<BookShelf title="string" books={booksArray} updateBook={jest.fn()} />));
+  });
+
+  it("Bookshelf creates 2 Book components when passed 2 books", () => {
+    const wrapper = mount(<BookShelf title="string" books={booksArray} updateBook={jest.fn()} />);
+    expect(wrapper.find("Book").length).toBe(2);
   });
 });

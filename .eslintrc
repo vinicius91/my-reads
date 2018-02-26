@@ -1,7 +1,5 @@
 {
-  "plugins": [
-    "react"
-  ],
+  "plugins": ["react"],
   "extends": "airbnb",
   "rules": {
     "linebreak-style": 0,
@@ -9,6 +7,7 @@
     "react/prefer-stateless-function": 0,
     "react/jsx-filename-extension": 0,
     "quotes": 0,
-    "array-callback-return": 0
+    "array-callback-return": 0,
+    "no-undef": 0
   }
 }

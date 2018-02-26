@@ -2,17 +2,16 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 
 class BookShelfChanger extends Component {
-
   constructor(props) {
     super(props);
-    this.state = { shelf: '' };
+    this.state = { shelf: "" };
     this.updateShelf = this.updateShelf.bind(this);
     this.getShelfForUpdate = this.props.getShelfForUpdate.bind(this);
   }
 
   componentWillMount() {
-    this.setState({ 
-      shelf: this.props.shelf,
+    this.setState({
+      shelf: this.props.shelf
     });
   }
 
@@ -43,6 +42,5 @@ BookShelfChanger.propTypes = {
   shelf: PropTypes.string.isRequired,
   getShelfForUpdate: PropTypes.func.isRequired
 };
-
 
 export default BookShelfChanger;
