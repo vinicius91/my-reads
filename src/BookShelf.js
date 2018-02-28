@@ -1,33 +1,28 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
-import { withStyles } from 'material-ui/styles';
+import { withStyles } from "material-ui/styles";
 import ExpansionPanel, {
   ExpansionPanelSummary,
-  ExpansionPanelDetails,
-} from 'material-ui/ExpansionPanel';
-import Typography from 'material-ui/Typography';
-import ExpandMoreIcon from 'material-ui-icons/ExpandMore';
+  ExpansionPanelDetails
+} from "material-ui/ExpansionPanel";
+import Typography from "material-ui/Typography";
+import ExpandMoreIcon from "material-ui-icons/ExpandMore";
 import Book from "./Book";
-
 
 const styles = theme => ({
   root: {
-    flexGrow: 1,
+    flexGrow: 1
   },
   heading: {
     fontSize: theme.typography.pxToRem(15),
-    fontWeight: theme.typography.fontWeightRegular,
-  },
+    fontWeight: theme.typography.fontWeightRegular
+  }
 });
 
 class BookShelf extends Component {
-
   render() {
     const {
-      title,
-      classes,
-      books,
-      updateBook
+      title, classes, books, updateBook
     } = this.props;
     return (
       <div className="bookshelf">
@@ -39,10 +34,7 @@ class BookShelf extends Component {
             <ol className="books-grid">
               {books.map(book => (
                 <li key={book.id}>
-                  <Book
-                    book={book}
-                    updateBook={updateBook}
-                  />
+                  <Book book={book} updateBook={updateBook} />
                 </li>
               ))}
             </ol>
@@ -54,9 +46,9 @@ class BookShelf extends Component {
 }
 
 BookShelf.propTypes = {
-  classes: PropTypes.object.isRequired,
+  classes: PropTypes.object.isRequired, // eslint-disable-line react/forbid-prop-types
   title: PropTypes.string.isRequired,
-  books: PropTypes.array.isRequired,
+  books: PropTypes.array.isRequired, // eslint-disable-line react/forbid-prop-types
   updateBook: PropTypes.func.isRequired
 };
 

@@ -4,66 +4,73 @@ import * as BooksAPI from "./BooksAPI";
 import Book from "./Book";
 
 class SearchBooks extends Component {
-
   constructor(props) {
     super(props);
     this.state = {
       books: [],
-      searchTerm: ''
+      searchTerm: ""
     };
     this.updateBooks = this.updateBooks.bind(this);
     this.updateBook = this.updateBook.bind(this);
   }
 
   updateBooks(event) {
-    if (event.target.value === '') {
-      this.setState({searchTerm: event.target.value });
+    if (event.target.value === "") {
+      this.setState({ searchTerm: event.target.value });
       this.setState({ books: [] });
       return;
     }
-    this.setState({searchTerm: event.target.value });
-    BooksAPI.search(event.target.value).then((books) => {
-      if (books !== undefined) {
-        if (books.length !== undefined && books.length > 0) {
-          this.setState({ books: books.filter(b => b.shelf === undefined) });
+    this.setState({ searchTerm: event.target.value });
+    BooksAPI.search(event.target.value)
+      .then((books) => {
+        if (books !== undefined) {
+          if (books.length !== undefined && books.length > 0) {
+            this.setState({ books: books.filter(b => b.shelf === undefined) });
+          } else {
+            this.setState({ books: [] });
+          }
         } else {
           this.setState({ books: [] });
         }
-      } else {
-        this.setState({ books: [] });
-      }
-    }).catch((err) => {
-      console.log('Error message', err);
-    });
+      })
+      .catch((err) => {
+        console.log("Error message", err); // eslint-disable-line no-console
+      });
   }
 
   updateBook(book, shelf) {
     const books = this.state.books.filter(b => b.id !== book.id);
-    BooksAPI.update(book, shelf).then(() => {
-      this.setState({ books });
-    }).catch((err) => {
-      console.log(err);
-    });
+    BooksAPI.update(book, shelf)
+      .then(() => {
+        this.setState({ books });
+      })
+      .catch((err) => {
+        console.log(err); // eslint-disable-line no-console
+      });
   }
 
   render() {
-    let { searchTerm, books } = this.state;
+    const { searchTerm, books } = this.state;
     return (
       <div className="search-books">
         <div className="search-books-bar">
-          <Link className="close-search" to="/">Close</Link>
+          <Link className="close-search" to="/" href="/">
+            Close
+          </Link>
           <div className="search-books-input-wrapper">
-            <input type="text" placeholder="Search by title or author" value={searchTerm} onChange={this.updateBooks} />
+            <input
+              type="text"
+              placeholder="Search by title or author"
+              value={searchTerm}
+              onChange={this.updateBooks}
+            />
           </div>
         </div>
         <div className="search-books-results">
           <ol className="books-grid">
             {books.map(book => (
               <li key={book.id}>
-                <Book
-                  book={book}
-                  updateBook={this.updateBook}
-                />
+                <Book book={book} updateBook={this.updateBook} />
               </li>
             ))}
           </ol>
