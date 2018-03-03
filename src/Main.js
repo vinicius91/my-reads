@@ -101,7 +101,6 @@ class Main extends Component {
 
   updateBook(book, shelf) {
     BooksAPI.update(book, shelf).then((result) => {
-      console.log(result);
       this.updateShelves(result);
     });
   }
