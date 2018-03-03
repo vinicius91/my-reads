@@ -12,6 +12,8 @@ import * as BooksAPI from "./BooksAPI";
 import BookShelf from "./BookShelf";
 import "./App.css";
 
+const R = require("ramda");
+
 const styles = {
   root: {
     flexGrow: 1
@@ -24,6 +26,44 @@ const styles = {
     marginRight: 20
   }
 };
+
+const byId = R.curry((id, book) => book.id === id);
+
+const byShelf = R.curry((shelf, book) => book.shelf === shelf);
+
+const filterBooks = R.curry((shelf, books) => books.filter(byShelf(shelf)));
+
+const checkIfEmpty = R.curry((bookIdList, shelf) => !bookIdList[shelf].length > 0);
+
+const setStateForNotEmptyBookList = R.curry((books, bookIdList) => {
+  const bookShelf = [];
+  bookIdList.map((id) => {
+    bookShelf.push(books.find(byId(id)));
+  });
+  return bookShelf;
+});
+
+const setStateForBookList = R.curry((bookIdList, shelf, books) => {
+  switch (shelf) {
+    case "currentlyReading":
+      if (checkIfEmpty(bookIdList, shelf)) {
+        return [];
+      }
+      return setStateForNotEmptyBookList(books, bookIdList.currentlyReading);
+    case "wantToRead":
+      if (checkIfEmpty(bookIdList, shelf)) {
+        return [];
+      }
+      return setStateForNotEmptyBookList(books, bookIdList.wantToRead);
+    case "read":
+      if (checkIfEmpty(bookIdList, shelf)) {
+        return [];
+      }
+      return setStateForNotEmptyBookList(books, bookIdList.read);
+    default:
+      return [];
+  }
+});
 
 class Main extends Component {
   constructor(props) {
@@ -49,39 +89,31 @@ class Main extends Component {
   }
 
   setBooks(books) {
-    const currentlyReading = books.filter(b => b.shelf === "currentlyReading");
+    const currentlyReading = filterBooks("currentlyReading", books);
     this.setState({ currentlyReadingList: currentlyReading });
 
-    const wantToRead = books.filter(b => b.shelf === "wantToRead");
+    const wantToRead = filterBooks("wantToRead", books);
     this.setState({ wantToReadList: wantToRead });
 
-    const read = books.filter(b => b.shelf === "read");
+    const read = filterBooks("read", books);
     this.setState({ readList: read });
   }
 
   updateBook(book, shelf) {
     BooksAPI.update(book, shelf).then((result) => {
+      console.log(result);
       this.updateShelves(result);
     });
   }
 
   updateShelves(bookIdList) {
     const { books } = this.state;
-    const currentlyReading = [];
-    const wantToRead = [];
-    const read = [];
-    bookIdList.currentlyReading.map((id) => {
-      currentlyReading.push(books.find(b => b.id === id));
-      this.setState({ currentlyReadingList: currentlyReading });
-    });
-    bookIdList.wantToRead.map((id) => {
-      wantToRead.push(books.find(b => b.id === id));
-      this.setState({ wantToReadList: wantToRead });
-    });
-    bookIdList.read.map((id) => {
-      read.push(books.find(b => b.id === id));
-      this.setState({ readList: read });
-    });
+    const currentlyReading = setStateForBookList(bookIdList, "currentlyReading", books);
+    const wantToRead = setStateForBookList(bookIdList, "wantToRead", books);
+    const read = setStateForBookList(bookIdList, "read", books);
+    this.setState({ currentlyReadingList: currentlyReading });
+    this.setState({ wantToReadList: wantToRead });
+    this.setState({ readList: read });
   }
 
   render() {
