@@ -3,15 +3,14 @@ import PropTypes from "prop-types";
 import BookShelfChanger from "./BookShelfChanger";
 
 class Book extends Component {
-
   constructor(props) {
     super(props);
     this.state = {
       book: {
-        imageLinks: { thumbnail: '' },
-        authors: [''],
-        title: '',
-        shelf: 'none'
+        imageLinks: { thumbnail: "" },
+        authors: [""],
+        title: "",
+        shelf: "none"
       }
     };
     this.getShelfForUpdate = this.getShelfForUpdate.bind(this);
@@ -23,7 +22,7 @@ class Book extends Component {
     }
 
     if (this.props.book.imageLinks === undefined) {
-      this.props.book.imageLinks = { thumbnail: '' };
+      this.props.book.imageLinks = { thumbnail: "" };
     }
   }
 
@@ -42,7 +41,9 @@ class Book extends Component {
   }
 
   render() {
-    const { imageLinks, title, authors, shelf } = this.state.book;
+    const {
+      imageLinks, title, authors, shelf
+    } = this.state.book;
     return (
       <div className="book">
         <div className="book-top">
@@ -57,14 +58,18 @@ class Book extends Component {
           <BookShelfChanger shelf={shelf} getShelfForUpdate={this.getShelfForUpdate} />
         </div>
         <div className="book-title">{title}</div>
-        {authors.map(author => <div key={author}className="book-authors">{author}</div>)}
+        {authors.map(author => (
+          <div key={author} className="book-authors">
+            {author}
+          </div>
+        ))}
       </div>
     );
   }
 }
 
 Book.propTypes = {
-  book: PropTypes.object.isRequired,
+  book: PropTypes.object.isRequired, // eslint-disable-line react/forbid-prop-types
   updateBook: PropTypes.func.isRequired
 };
 
